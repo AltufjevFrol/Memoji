@@ -44,11 +44,6 @@ body {margin:0;}
 	box-shadow: -1px 1px 5px rgba(0,0,0,0.5);
 }
 
-/* .card:active {
-	transform: rotateY(180deg);
-	box-shadow: -1px 1px 5px rgba(0,0,0,0.5);
-} */
-
 .front {
 	box-sizing: border-box;
 	position: absolute;
