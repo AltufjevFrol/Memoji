@@ -35,16 +35,19 @@ body {margin:0;}
 	transform-style: preserve-3d;
 	transition: transform 500ms;
 	border-radius: 9px;
-	box-shadow: 1px 1px 5px rgba(0,0,0,0.5); 
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
 }
 
 /* class for turn card to join JS */
-.turn {} 
-
-.card:active {
+.turn {
 	transform: rotateY(180deg);
 	box-shadow: -1px 1px 5px rgba(0,0,0,0.5);
 }
+
+/* .card:active {
+	transform: rotateY(180deg);
+	box-shadow: -1px 1px 5px rgba(0,0,0,0.5);
+} */
 
 .front {
 	box-sizing: border-box;
@@ -71,4 +74,31 @@ body {margin:0;}
 	backface-visibility: hidden;
 	border-radius: 9px;
 	background: white;
+	text-align: center;
+	font-size: 60px;
+	line-height: 130px;
+}
+
+.card[data-symbol="crocodile"] .back:after{
+	content: "🐊";
+}
+
+.card[data-symbol="monkey"] .back:after{
+	content: "🐵";
+}
+
+.card[data-symbol="kraken"] .back:after{
+	content: "🐙";
+}
+
+.card[data-symbol="ledy_bug"] .back:after{
+	content: "🐞";
+}
+
+.card[data-symbol="frog"] .back:after{
+	content: "🐸";
+}
+
+.card[data-symbol="cat"] .back:after{
+	content: "🐱";
 }
