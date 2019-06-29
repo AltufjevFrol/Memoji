@@ -43,13 +43,4 @@ const field = document.querySelector('.field');// получаем поле с �
 field.addEventListener('click', clickHandler);//ждем на нем всплывающие событие клика
 
 
-/*а это просто пока что бы карточки все посмотреть,
-потом уберу*/
-
-
-setTimeout(function(){
-	for (let i=0; i < cards.length; i++){
-		cards[i].classList.add('turn')
-	}
-}, 1000)
 
