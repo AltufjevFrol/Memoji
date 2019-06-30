@@ -97,3 +97,11 @@ body {margin:0;}
 .card[data-symbol="cat"] .back:after{
 	content: "🐱";
 }
+
+.red .back {
+	background: #F44336;
+}
+
+.green .back {
+	background: #5AD66F;
+}
