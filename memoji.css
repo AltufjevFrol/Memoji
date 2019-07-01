@@ -38,36 +38,33 @@ body {margin:0;}
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
 }
 
-/* class for turn card to join JS */
+/* class for turn card by JS */
 .turn {
 	transform: rotateY(180deg);
 	box-shadow: -1px 1px 5px rgba(0,0,0,0.5);
 }
 
-.front {
+.front, .back {
 	box-sizing: border-box;
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 2;
-	backface-visibility: hidden;
 	width: 100%;
 	height: 100%;
 	border-radius: 9px;
+	backface-visibility: hidden;
+	border-radius: 9px;
+	cursor: pointer;
+}
+
+.front {
+	z-index: 2;
 	border: solid 5px white;
 	background: linear-gradient(45deg, #22AB93, #19668D);
 }
 
 .back {
-	box-sizing: border-box;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
 	transform: rotateY(-180deg);
-	backface-visibility: hidden;
-	border-radius: 9px;
 	background: white;
 	text-align: center;
 	font-size: 60px;
