@@ -5,6 +5,7 @@ body {margin:0;}
 	min-height: 100vh;
 	text-align: center;
 	background: #CFD0CF;
+	position: relative;
 }
 
 .memoji h1 {
@@ -101,4 +102,86 @@ body {margin:0;}
 
 .green .back {
 	background: #5AD66F;
+}
+
+.watch {
+	margin: 30px 0 0 0;
+	text-align: center;
+	font: bold 32px Arial;
+	color: #434344
+}
+
+.float_field {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: #0000006D;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.float_window {
+	background: white;
+	min-width: 350px;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.float_window h2 {
+	font: bold 48px Arial;
+	margin: 30px 0 0 0;
+}
+
+.float_window h2 span {
+	display: inline-block;
+	animation: elastics 2s infinite reverse linear;
+}
+
+.float_window h2 span:nth-child(2) {
+	animation-delay:.25s;
+}
+
+.float_window h2 span:nth-child(3) {
+	animation-delay:.5s;
+}
+
+.float_window h2 span:nth-child(4) {
+	animation-delay:.75s;
+}
+
+
+@keyframes elastics {
+	0%, 100% {
+		transform: scaleY(0.4) translateY(0px);
+	}
+	25% {
+		transform: scaleY(0.8) translateY(-10px);
+	}
+	50% {
+		transform: scaleY(1.2) translateY(-20px);
+	}
+	75% {
+		transform: scaleY(0.8) translateY(-10px);
+}
+}
+
+.botton {
+	height: 40px;
+	margin: 40px 0 30px 0;
+	padding: 0 30px 0 30px;
+	background: linear-gradient(-135deg, #22AB93, #19668D);
+	border-radius: 9px;
+	color: white;
+	font: bold 20px/40px Arial;
+	cursor: pointer;
+	box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.botton:active {
+	box-shadow: inset 2px 1px 8px rgba(0,0,0,0.5);
 }
