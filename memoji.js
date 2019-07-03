@@ -2,7 +2,9 @@ const time = 60;//время на игру
 const memoji = document.querySelector('.memoji');//блок с игрой
 const field = document.querySelector('.field');//блок с карточками
 const cards = Array.from(document.querySelectorAll('.card'))//массив с элементами card
-let stopId;//таймер останавливаеться из разных мест поэтому переменная должна быть в общей области видимости
+let stopId;//id остановки таймера
+let opens = [];//массив с двумя открытыми карточками
+let greens = [];//массив с уже совпавшими картами
 /*тут наш зоопарк*/
 const symbols = [
 'crocodile',
@@ -42,67 +44,69 @@ function distribute(nods) {
 
 /*обработчик клика*/
 function clickHandler (event) {
+
 	switch (event.target.className){// нас интересуют две цели .front и .back
 		case 'front':
 			event.path[1].classList.add('turn');//включаем поворот на 180
-			finding();//ищем пару
-			//проверяем все карточки открыты или не все
-			if (Array.from(document.querySelectorAll('.card')).length ==
-					Array.from(document.querySelectorAll('.green')).length){
-					win();//выводим окно
+			opens.push(event.path[1]);//складываем в массив открытых карт
+			if(opens.length == 2){
+				finding(opens);//ищем пару
+			}
+			if(opens.length == 3){
+				resetRed(opens);
+			}
+			if(greens.length == cards.length){
+				win();
 			}
 		break;
 
 		case 'back':
 			if (!(event.path[1].dataset.state =='lock')){//проверям можно закрыть карту или нет
 			event.path[1].classList.remove('turn')// выключаем поворот
+			opens.splice(0, 1);
 			}
 		break;
 	}
 }
 
 /*функция определения пары*/
-function finding () {
-	cards.forEach(CallbackResetRed);// ищем красные карты и сбрасываем их
-	cards.forEach(CallbackFindTwoCards);// подсветили две открытые карточки зеленым или красным согласно правилам игры
-
-	/*функция сброса красных карт*/
-	function CallbackResetRed (card) {
-		if (card.classList.contains('red')){
-			delete card.dataset.state;
-			card.classList.remove('red', 'turn');
-		}
-	}
-
-/*функция подсвечивания карт*/
-	function CallbackFindTwoCards (card) {
-		/*проверяем есть ли еще открытые не заблокированные кроме той что мы открыли
-			если есть то блокируем обе и сравниваем их если нет то ничего не делаем*/
-		if (card.classList.contains('turn') && card.dataset.state != 'lock' && card !== event.path[1]) {
-			card.dataset.state = 'lock';
-			event.path[1].dataset.state ='lock';
-			if (card.dataset.symbol==event.path[1].dataset.symbol){
-				card.classList.add('green');//подсвечиваем зеленым данную
-				event.path[1].classList.add('green');//подсвечиваем зеленым кликнутую
-			}else {
-				card.classList.add('red');//подсвечиваем красным данную
-				event.path[1].classList.add('red');//подсвечиваем красным кликнутую
-			}
-		}
+function finding (two) {
+	two[0].dataset.state = 'lock';
+	two[1].dataset.state = 'lock';
+	if(two[0].dataset.symbol == two[1].dataset.symbol){
+		two[0].classList.add('green');
+		two[1].classList.add('green');
+		greens.push(two[0], two[1]);
+	}else{
+		two[0].classList.add('red');
+		two[1].classList.add('red');
 	}
 }
-/*конец функции определения пары*/
+
+	/*функция сброса красных карт*/
+	function resetRed (two) {
+		if (two[0].classList.contains('red')){
+			let resets = two.splice(0, 2);
+			delete resets[0].dataset.state;
+			delete resets[1].dataset.state;
+			resets[0].classList.remove('red', 'turn');
+			resets[1].classList.remove('red', 'turn');
+		}else{
+			two.splice(0, 2);
+		}
+	}
 
 /*функция таймера*/
 	function timer () {
 	let count = time;
-	stopId = setInterval(function () {count=count-1;
-	watch.textContent = count>=10 ?'00:'+ count :'00:0'+ count;
-	if(count === 0 && Array.from(document.querySelectorAll('.card')).length !=
-					Array.from(document.querySelectorAll('.green')).length){
-		lose();
-	}},1000)	
-}
+	stopId = setInterval(function () {
+		count=count-1;
+		watch.textContent = count>=10 ?'00:'+ count :'00:0'+ count;
+		if(count == 0 && greens.length != cards.length){
+			lose();
+		}
+		},1000)	
+	}
 
 function win () {
 	clearInterval(stopId);//останавливаем таймер
@@ -127,6 +131,8 @@ function reload (){
 	memoji.removeChild(windows);//закрыли окно
 	cards.forEach((card)=>{delete card.dataset.state;
 	card.classList.remove('red', 'green', 'turn');});//разблокировали, перевернули карты
+	opens.splice(0, opens.length);
+	greens.splice(0, greens.length);
 	distribute(cards); // раскидали карточки
 	watch.textContent = '01:00';//обновили таймер
 	field.addEventListener('click', function firstClick(){timer();//ждем первый клик и запускаем таймер
