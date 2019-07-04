@@ -25,10 +25,16 @@ let windows = document.createElement('div');
 windows.classList.add('float_field');
 
 /*ждем первый клик и запускаем таймер после чего удаляем этот обработчик*/
-field.addEventListener('click', function firstClick(){if(event.target.className == 'front')timer();
-field.removeEventListener('click', firstClick)});
+field.addEventListener('click', firstClick);
 
 field.addEventListener('click', clickHandler);//ставим обработчик кликов по карточкам
+
+function firstClick() {
+	if(event.target.className == 'front'){
+	timer();
+	field.removeEventListener('click', firstClick);
+	}
+}
 
 distribute(cards); // раскидали карточки
 
@@ -103,7 +109,7 @@ function finding (two) {
 		count=count-1;
 		watch.textContent = count>=10 ?'00:'+ count :'00:0'+ count;
 		if(count == 0 && greens.length != cards.length){
-			lose();
+				lose();
 		}
 		},1000)	
 	}
@@ -127,7 +133,7 @@ function lose () {
 }
 
 /*функция перезагрузки*/
-function reload (){
+function reload () {
 	memoji.removeChild(windows);//закрыли окно
 	cards.forEach((card)=>{delete card.dataset.state;
 	card.classList.remove('red', 'green', 'turn');});//разблокировали, перевернули карты
@@ -135,6 +141,5 @@ function reload (){
 	greens.splice(0, greens.length);
 	distribute(cards); // раскидали карточки
 	watch.textContent = '01:00';//обновили таймер
-	field.addEventListener('click', function firstClick(){timer();//ждем первый клик и запускаем таймер
-	field.removeEventListener('click', firstClick)});//удаляем этот обработчик
+	field.addEventListener('click', firstClick);
 }
