@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.timer{
+			width: 100px;
+			height: 100px;
+			position: relative;
+			
+		}
+		.count {
+			width: 95%;
+			height: 95%;
+			border-radius: 50%;
+			position: absolute;
+			left:0;
+			top:0;
+			margin: 2.5%;
+			text-align: center;
+			font-family: Arial;
+			font-weight: bold;
+			color: #082A23;
+			box-shadow: 1px 1px 5px 1px grey;
+			}
+		.circle{
+			stroke: #082A23;
+			fill: rgba(0, 255, 207, 0.5);
+			stroke-width: 2%;
+			cx:50%;
+			cy:50%;
+			r: 48%;
+			stroke-linecap: round;
+			}
+		.svg{
+			width: 100%;
+			height: 100%;
+			transform: rotate(-90deg);
+		}
+		@keyframes pulse {
+			0%
+			{fill: rgba(0, 255, 207, 0.5);}
+			33%
+			{fill: rgba(255, 0, 0, 0.7);}
+			66%
+			{fill: rgba(0, 255, 207, 0.5);}
+			100%
+			{fill: rgba(255, 0, 0, 0.7);}
+		}
+	</style>
+</head>
+<body>
+	<div class="timer">
+		<svg class="svg" xmlns="http://www.w3.org/2000/svg" version="1.1">
+		<circle class="circle"/>
+		</svg>
+		<div class="count"></div>
+	</div>
+<script type="text/javascript">
+	let circle = document.querySelector('.circle');
+	let lengthCircle = circle.getTotalLength();
+	let count = document.querySelector('.count')
+	let time = 100;
+	let _time=time;
+	let heightCount = count.offsetHeight;
+	count.style.fontSize = heightCount/3 + 'px';
+	count.style.lineHeight = heightCount + 'px';
+	circle.setAttribute('stroke-dasharray', circle.getTotalLength());
+	circle.setAttribute('stroke-dashoffset', circle.getTotalLength());
+	count.textContent = time;
+	let idRun = setInterval(run, 100);
+	let idCounter = setInterval(counter, 1000);
+	function run (){
+		lengthCircle=lengthCircle-circle.getTotalLength()/(_time*10);
+		circle.setAttribute('stroke-dashoffset', lengthCircle);
+		}
+	function counter () {
+		time--;
+		count.textContent = time;
+
+		if(time==Math.floor(_time/100*25)){
+			circle.style.animation = 'pulse 800ms infinite alternate forwards linear';
+		}
+		if(time==0){
+			clearInterval(idCounter);
+			clearInterval(idRun);
+			circle.style.animationIterationCount = '1';
+		}
+	}
+</script>
+</body>
+</html>
