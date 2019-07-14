@@ -3,9 +3,15 @@ body {
 	margin:0;
 	padding: 0;
 	background: #CFD0CF;
-	font-family: 'Muli', 'Arial', sans-serif
+	font-family: 'Muli', 'Arial', sans-serif;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
+/* Стили игрового поля */
 .memoji {
 	width: 895px;
 	margin: 0 auto 0 auto;
@@ -97,6 +103,8 @@ body {
 	background: #5AD66F;
 }
 
+
+/* Стили всплывающего поля */
 .float_field {
 	position: absolute;
 	left: 0;
@@ -107,8 +115,73 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	font: 15px 'Muli', 'Arial', sans-serif;
 }
 
+
+/* Стили окон на всплывающем поле */
+
+/* Стили стартовой формы */
+form[name=start] {
+	background: white;
+	min-width: 250px;
+	border-radius: 9px;
+	padding: 5px;
+}
+form[name=start] fieldset {
+	border-radius: 9px;
+	border: solid 1px #082A23;
+	margin-bottom: 25px;
+}
+form[name=start] legend {
+	margin: 5px auto 5px auto;
+}
+form[name=start] input {
+	box-sizing: border-box;
+	width: 100%;
+	height: 25px;
+	border-radius: 3px;
+	border: solid 1px #082A23;
+	font: 15px 'Muli', 'Arial', sans-serif;
+	text-align: center;
+}
+form[name="start"] input:focus{
+	outline: none;
+	box-shadow: 0 0 2px 1px rgba(0, 255, 207, 0.5);
+}
+form[name="start"] input[type="submit"] {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	border: none;
+	background:rgba(0, 255, 207, 0.5);
+	box-shadow: 1px 1px 5px 1px grey;
+	cursor: pointer;
+	margin: auto;
+	float: initial;
+	display: block;
+	margin-bottom: 5px;
+	font: 20px  'Muli', 'Arial', sans-serif;
+}
+form[name="start"] input[type="submit"]:active{
+	box-shadow: none;
+}
+form[name="start"] input[type="range"] {
+	width: 100%;
+	margin: auto;
+	float: initial;
+}
+form[name="start"] input[type="range"]:focus{
+	box-shadow: none;
+
+}
+.log{
+	height: 25px;
+	margin: 5px auto 0 auto;
+	text-align: center;
+}
+
+/* Стили окон побыды и поражения */
 .float_window {
 	background: white;
 	min-width: 350px;
@@ -141,7 +214,6 @@ body {
 	animation-delay:.75s;
 }
 
-
 @keyframes elastics {
 	0%, 100% {
 		transform: scaleY(0.4) translateY(0px);
@@ -173,6 +245,7 @@ body {
 .botton:active {
 	box-shadow: inset 2px 1px 8px rgba(0,0,0,0.5);
 }
+
 
 /*стили для таймера*/
 
@@ -222,6 +295,8 @@ body {
 	{fill: rgba(255, 0, 0, 0.7);}
 }
 
+
+/* Стили для кнопки достижений */
 .botton_achieving {
 	width: 100px;
 	height: 100px;
@@ -245,6 +320,7 @@ body {
 	box-shadow: none;
 }
 
+/* Стили для окошка достижений */
 .achieving {
 	position: fixed;
 	top: 0;
@@ -276,6 +352,8 @@ body {
 	float: right;
 }
 
+
+/* медиа запросы */
 @media screen and (max-width: 900px) {
 	.timer{
 	position: relative;
