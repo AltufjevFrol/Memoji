@@ -20,8 +20,9 @@ const timer = {
 	_idRun: undefined,
 	_idCounter: undefined,
 
-	_setTime: function(s){
-		if(typeof s === 'number' && 0<s && s<100){
+	_setTime: function(sec){
+		s = parseInt(sec);
+		if(typeof s === 'number' && 0<s && s<=120){
 			this._time = s;
 		}else{
 			this._time = 60;

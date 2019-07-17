@@ -8,7 +8,7 @@
 *Card.revert() - переворачивает карту обратно
 *Card.spin() - пускает карточку в бесконечное вращение
 *Card.doNotSpin() - останавливает вращение
-*Card.hidde() - прячет карту
+*Card.hide() - прячет карту
 *Card.show() - показывает карту
 *Card.paintRight() - подсвечивает карту в "правильный" цвет
 *Card.paintWrong() - подсвечивает карту в "неправильный" цвет
@@ -19,24 +19,33 @@
 
 /*Конструктор Card принимает два аргумента элемент DOM и массив парных кодовых точек символов*/
 function Card (element, emojis) {
-	let emoji = emojis.splice([Math.floor(Math.random()*(emojis.length))], 1)[0];
-	element.childNodes[3].textContent = String.fromCodePoint(emoji);
 	this.element = element;
 	this.class = element.classList[1];
-	this.emoji = emoji;
+	this.emoji = emojis.splice([Math.floor(Math.random()*(emojis.length))], 1)[0];
 	this.partner = null;
-	this.lock = true;
+	this.lock = false;
+	this.partnerFound = false;
 }
 
 Card.prototype = {
 	constructor: Card,
 	turn: function(){
+		if(this.lock){
+			return;
+		}else{
+		this.element.childNodes[3].textContent = String.fromCodePoint(this.emoji);
 		this.element.classList.add('turn');
 		return this;
+		}
 	},
 	revert: function(){
+		if(this.lock){
+			return;
+		}else{
 		this.element.classList.remove('turn');
+		this.element.childNodes[3].textContent = '';
 		return this;
+		}
 	},
 	spin: function(){
 		this.element.lastElementChild.hidden=true;
@@ -48,7 +57,7 @@ Card.prototype = {
 		this.element.classList.remove('spin');
 		return this;
 	},
-	hidde: function(){
+	hide: function(){
 		this.element.style.visibility = 'hidden';
 		return this;
 	},
