@@ -17,4 +17,5 @@ function User(name){
 	this.countLose = 0;
 	this.bestCountTurn = Infinity;
 	this.bestTime = Infinity;
+	this.countTurn = 0;
 }

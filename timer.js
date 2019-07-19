@@ -107,15 +107,16 @@ const timer = {
 	},
 };
 
-
-	/*устанавливаем размер шрифта в зависимости от размера счетчика на странице*/
-	let heightCount = timer._counter.offsetHeight;
-	timer._counter.style.fontSize = heightCount/3 + 'px';
-	timer._counter.style.lineHeight = heightCount + 'px';
-
-	/*сдвигаем всю обводку circle до конца*/
-	timer._circle.setAttribute('stroke-dasharray', timer._lengthCircle);
-	timer._circle.setAttribute('stroke-dashoffset', timer._lengthCircle);
-
-	/*устанавливаем начальное значение счетчика*/
-	timer._counter.textContent = '0';
+/*задержка что бы таймер успел отрисоваться и переменные получили нормальное значение*/
+	setTimeout(()=>{
+		/*устанавливаем размер шрифта в зависимости от размера счетчика на странице*/
+		let heightCount = timer._counter.offsetHeight;
+		timer._counter.style.fontSize = heightCount/3 + 'px';
+		timer._counter.style.lineHeight = heightCount + 'px';
+	
+		/*сдвигаем всю обводку circle до конца*/
+		timer._circle.setAttribute('stroke-dasharray', timer._lengthCircle);
+		timer._circle.setAttribute('stroke-dashoffset', timer._lengthCircle);
+	
+		/*устанавливаем начальное значение счетчика*/
+		timer._counter.textContent = '0';},100);

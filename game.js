@@ -1,5 +1,5 @@
 /*Объект game
-*game.card1-card12 - объекты класса Card
+*game.cards - объекты класса Card
 *game.createCards - создает объекты класса Card, карты изначально скрыты
 *game.defPartner - заполняет поле partner объектов класса Card
 *ссылками друг на друга у объектов с одинаковыми символами
@@ -16,9 +16,10 @@
 */
 const game = {
 	htmlForm: '<form  name="start"action="#"><fieldset><legend>Your Name</legend><input autofocus type="text" id="name"></p></fieldset><fieldset><legend>Time to try</legend><input type="range" name="time" min="10" max="120" step="10"><p class="log"></p></fieldset><input type="submit" name="submit" value="Go!"></form>',
-	htmlWin: '<div class="float_window"><h2><span>W</span><span>i</span><span>n</span></h2><div class="botton">Play again</div></div>',
-	htmlLose: '<div class="float_window"><h2><span>L</span><span>o</span><span>s</span><span>e</span></h2><div class="botton">Try again</div></div>',
+	htmlWin: '<div class="float_window"><h2><span>W</span><span>i</span><span>n</span></h2><p class = "message"></p><div class="botton">Play again</div></div>',
+	htmlLose: '<div class="float_window"><h2><span>L</span><span>o</span><span>s</span><span>e</span></h2><p class = "message"></p><div class="botton">Try again</div></div>',
 	cardsDOM: Array.from(document.querySelectorAll('.card')),
+	cards: {},
 };
 
 game.createCards = function(){
@@ -39,20 +40,20 @@ game.createCards = function(){
 	this.cardsDOM.forEach(function(item){
 	let card = new Card (item, emojis);
 	card.hide();
-	this[card.class] = card;
-	}, this);
+	this.cards[card.class] = card;
+	}, game);
 	return this;
 };
 
 game.defPartner = function(){
-	for(prop in this){
-		if(this[prop].partner === null){
-			let emoji = this[prop].emoji;
-			let card = this[prop];
-			for(prop in this){
-				if(emoji === this[prop].emoji){
-					this[prop].partner = card;
-					card.partner = this[prop];
+	for(prop in this.cards){
+		if(this.cards[prop].partner === null){
+			let emoji = this.cards[prop].emoji;
+			let card = this.cards[prop];
+			for(prop in this.cards){
+				if(emoji === this.cards[prop].emoji){
+					this.cards[prop].partner = card;
+					card.partner = this.cards[prop];
 					break;
 				}
 			}
@@ -62,75 +63,70 @@ game.defPartner = function(){
 
 game.animationPreload = function(){
 	let delay = 0;
-	for(let i=1; i<=this.cardsDOM.length; i++){
+	for(let i=1; i<=this.cardsDOM.length; i++){//не использую for in что бы гарантировать порядок прохода по картам
 		let delayStart = delay;
-		setTimeout(game['card'+i].show.bind(game['card'+i]), delayStart);
-		setTimeout(game['card'+i].spin.bind(game['card'+i]), delayStart);
-		let delayStop = delayStart + 1000;
-		setTimeout(game['card'+i].doNotSpin.bind(game['card'+i]), delayStop);
-		delay = delay + 1000;
+		setTimeout(game.cards['card'+i].show.bind(game.cards['card'+i]), delayStart);
+		setTimeout(game.cards['card'+i].spin.bind(game.cards['card'+i]), delayStart);
+		let delayStop = delayStart + 500;
+		setTimeout(game.cards['card'+i].doNotSpin.bind(game.cards['card'+i]), delayStop);
+		delay = delay + 250;
 	}
 };
 
 game.play = function(){
 	const field = document.querySelector('.field')
-field.addEventListener('click', firstClick);
-function firstClick(event){
+	field.addEventListener('click', firstClick);
+	function firstClick(event){
 	if(event.target.classList.contains('front')){
 		timer.start(game.user.timeToPlay, game.lose);
 		field.removeEventListener('click', firstClick);
 	}
 }
-let opens = [];
-let counterOutCards = 0;
-field.addEventListener('click', clickOnCard);
-function clickOnCard(event){
+game.opens = [];
+game.outCards = [];
+field.addEventListener('click', game.clickOnCard);
+};
+
+game.clickOnCard = function (event){//обработчик кликов отдельным методом так как хочу снимать лиснера в другом методе
 	if(event.target.classList.contains('back')){
-		let card = game[event.path[1].classList[1]].revert();
+		let card = game.cards[event.path[1].classList[1]].revert();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
 		if(card){
-			let index =opens.findIndex(function(item){
+			let index =game.opens.findIndex(function(item){
 				return item.class === card.class;
 			});
-			opens.splice(index,1);
+			game.opens.splice(index,1);
 		}
 	}if(event.target.classList.contains('front')){
-		let card = game[event.path[1].classList[1]].turn();
+		let card = game.cards[event.path[1].classList[1]].turn();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
 		if(card){
-			opens.push(card);
-			game.user.countTurn = ++game.user.countTurn;
+			game.opens.push(card);
+			++game.user.countTurn;//здесь что то не так
 		}
-		if(opens.length===2){
-			opens[0].lock = true;
-			opens[1].lock = true;
-			if(opens[0].partner === opens[1] && opens[1].partner === opens[0]){
-				opens[0].paintRight().partner.paintRight();
-				opens[0].partnerFound = true;
-				opens[0].partner.partnerFound = true;
-				counterOutCards = counterOutCards+2;
+		if(game.opens.length===2){
+			game.opens[0].lock = true;
+			game.opens[1].lock = true;
+			if(game.opens[0].partner === game.opens[1] && game.opens[1].partner === game.opens[0]){
+				game.opens[0].paintRight().partner.paintRight();
+				game.opens[0].partnerFound = true;
+				game.opens[0].partner.partnerFound = true;
+				game.outCards = game.outCards.concat(game.opens.splice(0, 2))//сбрасываем карты в выбовшие
 			}else{
-				opens[0].paintWrong();
-				opens[1].paintWrong();
+				game.opens[0].paintWrong();
+				game.opens[1].paintWrong();
 			}
-		}else if(opens.length===3){
-			if(opens[0].partnerFound){
-				opens.splice(0,2);
-			}else{
-				opens[0].lock = false;
-				opens[1].lock = false;
-				opens[0].clearWrong();
-				opens[1].clearWrong();
-				opens[0].revert();
-				opens[1].revert();
-				opens.splice(0,2);
-			}
+		}else if(game.opens.length===3){
+				game.opens[0].lock = false;//разблокируем обе карты
+				game.opens[1].lock = false;
+				game.opens[0].clearWrong();//убираем цвет
+				game.opens[1].clearWrong();
+				game.opens[0].revert();//переворачиваем назад
+				game.opens[1].revert();
+				game.opens.splice(0,2);//отставляем в открытых только одно последнию карту
 		}
 	}
-	if(counterOutCards === game.cardsDOM.length){
-		game.user.countTurn = counterOutCards;
+	if(game.outCards.length === game.cardsDOM.length){//проверям на победу
 		game.win();
 	}
-}
-game.clickOnCard = clickOnCard;//для снятия слушителя в другом методе
 };
 
 game.start = function(){
@@ -172,22 +168,25 @@ game.win = function(){
 	field.classList.add('float_field');
 	field.innerHTML = game.htmlWin;
 	document.body.appendChild(field);
+	let message = document.querySelector('.message')
+	message.textContent = 'Your time '+game.user.time+' seconds. '+' You opened cards '+game.user.countTurn+' times.'
 	let botton = document.querySelector('.float_field .botton');
-	botton.addEventListener('click', game.restart.bind(null, field));
+	botton.addEventListener('click', game.restart.bind(game, field));
 	game.user.bestTime = game.user.time < game.user.bestTime ? game.user.time : game.user.bestTime;
 	game.user.bestCountTurn = game.user.countTurn < game.user.bestCountTurn ? game.user.countTurn : game.user.bestCountTurn;
-	game.updateAchieving();
 };
 
 game.lose = function(){
 	document.querySelector('.field').removeEventListener('click', game.clickOnCard);
+	game.user.countLose = ++game.user.countLose;
 	let field = document.createElement('section');
 	field.classList.add('float_field');
 	field.innerHTML = game.htmlLose;
 	document.body.appendChild(field);
+	let message = document.querySelector('.message')
+	message.textContent = 'Tray better!'
 	let botton = document.querySelector('.float_field .botton');
 	botton.addEventListener('click', game.restart.bind(game, field));
-	game.updateAchieving();
 };
 
 game.updateAchieving = function(){
@@ -202,16 +201,21 @@ game.updateAchieving = function(){
 }
 
 game.restart = function(block){
+	game.updateAchieving();
+	game.user.countTurn = 0;
+	timer._counter.textContent = '0';
+	timer._circle.style.animation = 'none';
+	timer._circle.setAttribute('stroke-dashoffset', timer._lengthCircle);
 	document.body.removeChild(block);
-	game.cardsDOM.forEach((item, index)=>{
-		let i = ++index;
-		item.className = 'card '+'card'+i;
-	})
-	
+	/*здесь нужен сброс всех состояний карт*/
+	for(prop in game.cards){
+		game.cards[prop].lock = false;
+		game.cards[prop].clear();
+		game.cards[prop].revert();
+	}
+	/*здесь нужен сброс всех состояний карт*/
 	game.createCards();//сооздаем объекты карточек
 	game.defPartner();//определяем пары
 	game.animationPreload();
-	document.querySelector('.card12').addEventListener('animationstart', () => {
-	setTimeout(game.play, 2000);
-	});//ждем окончания анимации и запускаем процесс игры
+	document.querySelector('.card12').addEventListener('animationstart', startGame);//ждем окончания анимации и запускаем процесс игры
 }
