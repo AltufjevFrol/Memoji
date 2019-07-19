@@ -6,18 +6,18 @@ document.querySelector('.card12').addEventListener('animationstart', startGame);
 
 function startGame(){
 setTimeout(game.play, 500);
-document.querySelector('.card12').removeEventListener('animationstart', startGame)
+document.querySelector('.card12').removeEventListener('animationstart', startGame,true)
 }
 
-const ach = document.querySelector('.achieving');
-const bottAch = document.querySelector('.botton_achieving');
-ach.addEventListener('click', clickAch);
-bottAch.addEventListener('click', clickBottAch);
+/*const achieving = document.querySelector('.achieving');
+const bottonAchieving = document.querySelector('.botton_achieving');
+ach.addEventListener('click', clickAchieving);
+bottAch.addEventListener('click', clickBottonAchieving);
 
-function clickAch(){
-
-};
-
-function clickBottAch(){
+function clickAchieving(){
 
 };
+
+function clickBottonAchieving(){
+
+};*/

@@ -15,7 +15,7 @@
 *htmlLose - поле с кодом html
 */
 const game = {
-	htmlForm: '<form  name="start"action="#"><fieldset><legend>Your Name</legend><input autofocus type="text" id="name"></p></fieldset><fieldset><legend>Time to try</legend><input type="range" name="time" min="10" max="120" step="10"><p class="log"></p></fieldset><input type="submit" name="submit" value="Go!"></form>',
+	htmlForm: '<form  name="start"action="#"><fieldset><legend>Your Name</legend><input autofocus type="text" id="name"></fieldset><fieldset><legend>Time to try</legend><input type="range" name="time" min="10" max="120" step="10"><p class="log"></p></fieldset><input type="submit" name="submit" value="Go!"></form>',
 	htmlWin: '<div class="float_window"><h2><span>W</span><span>i</span><span>n</span></h2><p class = "message"></p><div class="botton">Play again</div></div>',
 	htmlLose: '<div class="float_window"><h2><span>L</span><span>o</span><span>s</span><span>e</span></h2><p class = "message"></p><div class="botton">Try again</div></div>',
 	cardsDOM: Array.from(document.querySelectorAll('.card')),
@@ -138,6 +138,7 @@ game.start = function(){
 
 			let range = document.querySelector('input[type="range"]');
 			let log = document.querySelector('.log');
+			range.value = 60;
 			log.textContent = range.value + ' sec';
 			function updateValue() {
 				log.textContent = range.value + ' sec';
