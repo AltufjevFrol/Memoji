@@ -1,11 +1,11 @@
-/*								Класс Card
+/*Класс Card
 *Card.element - хранит ссылку на связанный элемент DOM
 *Card.class - хранит строку c именем класса связанного с ним элемента
 *Card.emoji - хранит кодовую точку символа на карточке
-*Card.partner - хранит ссылку на объект класса Card имеющего такой же символ
-*Card.lock - хранит булево значение метку блокировки от нажатий
-*Card.turn() - переворачивает карточку картинкой вверх
-*Card.revert() - переворачивает карту обратно
+*Card.partner - хранит ссылку на экземпляр класса Card имеющего такой же символ
+*Card.lock - хранит значение блокировки от нажатий
+*Card.turn() - переворачивает карточку картинкой вверх если не заблокирована
+*Card.revert() - переворачивает карту обратно если не заблокирована
 *Card.spin() - пускает карточку в бесконечное вращение
 *Card.doNotSpin() - останавливает вращение
 *Card.hide() - прячет карту
@@ -24,11 +24,11 @@ function Card (element, emojis) {
 	this.emoji = emojis.splice([Math.floor(Math.random()*(emojis.length))], 1)[0];
 	this.partner = null;
 	this.lock = false;
-	this.partnerFound = false;
 }
 
 Card.prototype = {
 	constructor: Card,
+
 	turn: function(){
 		if(this.lock){
 			return;

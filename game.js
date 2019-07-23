@@ -89,7 +89,7 @@ field.addEventListener('click', game.clickOnCard);
 
 game.clickOnCard = function (event){//обработчик кликов отдельным методом так как хочу снимать лиснера в другом методе
 	if(event.target.classList.contains('back')){
-		let card = game.cards[event.path[1].classList[1]].revert();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
+		let card = game.cards[event.target.offsetParent.classList[1]].revert();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
 		if(card){
 			let index =game.opens.findIndex(function(item){
 				return item.class === card.class;
@@ -97,7 +97,7 @@ game.clickOnCard = function (event){//обработчик кликов отде
 			game.opens.splice(index,1);
 		}
 	}if(event.target.classList.contains('front')){
-		let card = game.cards[event.path[1].classList[1]].turn();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
+		let card = game.cards[event.target.offsetParent.classList[1]].turn();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
 		if(card){
 			game.opens.push(card);
 			++game.user.countTurn;//здесь что то не так
@@ -107,8 +107,6 @@ game.clickOnCard = function (event){//обработчик кликов отде
 			game.opens[1].lock = true;
 			if(game.opens[0].partner === game.opens[1] && game.opens[1].partner === game.opens[0]){
 				game.opens[0].paintRight().partner.paintRight();
-				game.opens[0].partnerFound = true;
-				game.opens[0].partner.partnerFound = true;
 				game.outCards = game.outCards.concat(game.opens.splice(0, 2))//сбрасываем карты в выбовшие
 			}else{
 				game.opens[0].paintWrong();
@@ -185,18 +183,18 @@ game.lose = function(){
 	field.innerHTML = game.htmlLose;
 	document.body.appendChild(field);
 	let message = document.querySelector('.message')
-	message.textContent = 'Tray better!'
+	message.textContent = 'Try your best!'
 	let botton = document.querySelector('.float_field .botton');
 	botton.addEventListener('click', game.restart.bind(game, field));
 };
 
 game.updateAchieving = function(){
 	let wins = document.querySelector('.achieving .wins');
-	let loses = document.querySelector('.achieving .loses');
+	let losses = document.querySelector('.achieving .losses');
 	let bestTime = document.querySelector('.achieving .best_time');
 	let shortest_game = document.querySelector('.achieving .shortest_game');
 	wins.textContent = game.user.countWin;
-	loses.textContent = game.user.countLose;
+	losses.textContent = game.user.countLose;
 	bestTime.textContent = game.user.bestTime === Infinity ?'-':game.user.bestTime;
 	shortest_game.textContent = game.user.bestCountTurn === Infinity ?'-':game.user.bestCountTurn;
 }
