@@ -143,18 +143,24 @@ game.start = function(){
 			}
 			range.addEventListener('input', updateValue);
 
+			let name = document.querySelector('#name')
+			name.addEventListener('blur', ()=>{
+				if(name.value.length !== 0){
+					name.style.background = '';
+				}else{
+					name.style.background = '#E81010';
+				}
+			});
+
 		field.addEventListener('submit', submit);
 		function submit(event){
 			event.preventDefault();
-			let name = document.querySelector('#name')
 				if(name.value.length !== 0){
 				game.user = new User(name.value);
 				name.style.background = 'initial';
 				game.user.timeToPlay = range.value;
 				document.body.removeChild(field);
 				game.animationPreload();
-			}else {
-				name.style.background = 'rgba(255, 0, 0, 0.7)';
 			}
 		}
 };
@@ -169,6 +175,7 @@ game.win = function(){
 	document.body.appendChild(field);
 	let message = document.querySelector('.message')
 	message.textContent = 'Your time '+game.user.time+' seconds. '+' You opened cards '+game.user.countTurn+' times.'
+	document.querySelector('.float_window h2').style.color = '#33C407';
 	let botton = document.querySelector('.float_field .botton');
 	botton.addEventListener('click', game.restart.bind(game, field));
 	game.user.bestTime = game.user.time < game.user.bestTime ? game.user.time : game.user.bestTime;
@@ -184,6 +191,7 @@ game.lose = function(){
 	document.body.appendChild(field);
 	let message = document.querySelector('.message')
 	message.textContent = 'Try your best!'
+	document.querySelector('.float_window h2').style.color = '#E81010';
 	let botton = document.querySelector('.float_field .botton');
 	botton.addEventListener('click', game.restart.bind(game, field));
 };
