@@ -22,7 +22,6 @@ h1 {
 h1 span{
 	transform-origin: top center;
 	display: inline-block;
-	z-index: 5;
 }
 .l1{
 	transform: scaleY(1.5);
