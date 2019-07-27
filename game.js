@@ -18,7 +18,7 @@ const game = {
 	htmlForm: '<form  name="start"action="#"><fieldset><legend>Your Name</legend><input autofocus type="text" id="name"></fieldset><fieldset><legend>Time to try</legend><input type="range" name="time" min="10" max="120" step="10"><p class="log"></p></fieldset><input type="submit" name="submit" value="Go!"></form>',
 	htmlWin: '<div class="float_window"><h2><span>W</span><span>i</span><span>n</span></h2><p class = "message"></p><div class="botton">Play again</div></div>',
 	htmlLose: '<div class="float_window"><h2><span>L</span><span>o</span><span>s</span><span>e</span></h2><p class = "message"></p><div class="botton">Try again</div></div>',
-	cardsDOM: Array.from(document.querySelectorAll('.card')),
+	cardsDOM: Array.prototype.slice.call(document.querySelectorAll('.card')),
 	cards: {},
 };
 
@@ -87,7 +87,7 @@ game.outCards = [];
 field.addEventListener('click', game.clickOnCard);
 };
 
-game.clickOnCard = function (event){//обработчик кликов отдельным методом так как хочу снимать лиснера в другом методе
+game.clickOnCard = function (event){//обработчик кликов отдельным методом так как хочу отключать событие в другом методе
 	if(event.target.classList.contains('back')){
 		let card = game.cards[event.target.offsetParent.classList[1]].revert();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
 		if(card){
@@ -96,12 +96,19 @@ game.clickOnCard = function (event){//обработчик кликов отде
 			});
 			game.opens.splice(index,1);
 		}
-	}if(event.target.classList.contains('front')){
+	}
+	if(event.target.classList.contains('front')){
 		let card = game.cards[event.target.offsetParent.classList[1]].turn();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
 		if(card){
-			game.opens.push(card);
-			++game.user.countTurn;//здесь что то не так
-		}
+			if(game.opens.length>0){//защита от двойного нажатия
+				if(card.class !== game.opens[0].class){
+					game.opens.push(card);
+					++game.user.countTurn;
+				}else{console.log('YOU\'VE DONE IT!')}
+			}else{
+				game.opens.push(card);
+				++game.user.countTurn;
+			}
 		if(game.opens.length===2){
 			game.opens[0].lock = true;
 			game.opens[1].lock = true;
@@ -125,42 +132,44 @@ game.clickOnCard = function (event){//обработчик кликов отде
 	if(game.outCards.length === game.cardsDOM.length){//проверям на победу
 		game.win();
 	}
+}
 };
 
 game.start = function(){
 	let field = document.createElement('section');
-		field.classList.add('float_field');
-		field.innerHTML = game.htmlForm;
-		/*let memoji = document.querySelector('.memoji');*/
-		document.body.appendChild(field);
+	field.classList.add('float_field');
+	field.innerHTML = game.htmlForm;
+	document.body.appendChild(field);
 
-			let range = document.querySelector('input[type="range"]');
-			let log = document.querySelector('.log');
-			range.value = 60;
-			log.textContent = range.value + ' sec';
-			function updateValue() {
-				log.textContent = range.value + ' sec';
-			}
-			range.addEventListener('input', updateValue);
+	let range = document.querySelector('input[type="range"]');
+	let log = document.querySelector('.log');
+	range.value = 60;
+	log.textContent = range.value + ' sec';
+	function updateValue() {
+		log.textContent = range.value + ' sec';
+		}
+	range.addEventListener('input', updateValue);
 
-			let name = document.querySelector('#name')
-			name.addEventListener('blur', ()=>{
-				if(name.value.length !== 0){
-					name.style.background = '';
-				}else{
-					name.style.background = '#E81010';
-				}
-			});
+	let name = document.querySelector('#name')
+	name.addEventListener('blur', function(){
+		if(name.value.length !== 0){
+			name.style.background = '';
+		}else{
+			name.style.background = '#E81010';
+		}
+	});
 
-		field.addEventListener('submit', submit);
-		function submit(event){
-			event.preventDefault();
-				if(name.value.length !== 0){
-				game.user = new User(name.value);
-				name.style.background = 'initial';
-				game.user.timeToPlay = range.value;
-				document.body.removeChild(field);
-				game.animationPreload();
+	field.addEventListener('submit', submit);
+	function submit(event){
+		event.preventDefault();
+		if(name.value.length !== 0){
+			game.user = new User(name.value);
+			name.style.background = 'initial';
+			game.user.timeToPlay = range.value;
+			document.body.removeChild(field);
+			game.animationPreload();
+			}else{
+				name.style.background = '#E81010';//иногда в FireFox не срабатывает автофокус тогда нужна подсветка при отправке
 			}
 		}
 };

@@ -10,13 +10,13 @@ body {
 /* заголовок */
 h1 {
 	margin: auto;
-	padding: 25px 0 85px 0;
+	padding: 5px 0 85px 0;
 	text-align: center;
 	font-size: 100px;
 	font-weight: bold;
 	text-transform: uppercase;
 	color: #E81010;
-	text-shadow: 0 0 5px #0197F6, 0 0 10px #0197F6, 0 0 15px #0197F6, 0 0 20px #E81010, 0 0 35px #E81010, 0 0 40px #E81010, 0 0 50px #E81010, 0 0 75px #E81010;
+	text-shadow: 0 0 5px #0197F6, 0 0 10px #0197F6, 0 0 15px #0197F6, 0 0 20px #E81010, 0 0 35px #E81010, 0 0 40px #E81010, 0 0 45px #E81010, 0 0 50px #E81010;
 }
 
 h1 span{
@@ -139,7 +139,7 @@ transform: translateY(25px);
 }
 
 .front {
-	z-index: 2;
+/*	z-index: 2;*/
 	border: solid 5px white;
 	background: linear-gradient(45deg, #02182B, #448FA3);
 }
@@ -228,6 +228,10 @@ form[name="start"] input[type="submit"]:active{
 }
 form[name="start"] input[type="submit"]:focus{
 	outline: none;
+}
+form[name="start"] input[type="range"]{
+	height: 60px;
+	border: none;
 }
 form[name="start"] input[type="range"]:focus{
 	box-shadow: none;
@@ -340,9 +344,6 @@ form[name="start"] input[type="range"]:focus{
 	stroke: #02182B;
 	fill: rgba( 51, 196, 7, 0.8);
 	stroke-width: 2%;
-	cx:50%;
-	cy:50%;
-	r: 48%;
 	stroke-linecap: round;
 }
 

@@ -12,7 +12,10 @@
 const timer = {
 	_circle: document.querySelector('.circle'),
 	_counter: document.querySelector('.count'),
-	_lengthCircle: document.querySelector('.circle').getTotalLength(),
+	_cx: document.querySelector('.svg').getClientRects()[0].width * 0.5,
+	_cy: document.querySelector('.svg').getClientRects()[0].width * 0.5,
+	_r: document.querySelector('.svg').getClientRects()[0].width * 0.48,
+	_lengthCircle: Math.PI*2*(document.querySelector('.svg').getClientRects()[0].width * 0.48),//document.querySelector('.circle').getTotalLength(),
 	_time: undefined,
 	_count: 0,
 	_fun: null,
@@ -107,12 +110,17 @@ const timer = {
 };
 
 /*задержка что бы таймер успел отрисоваться и переменные получили нормальное значение*/
-	setTimeout(()=>{
+	setTimeout(function(){
 		/*устанавливаем размер шрифта в зависимости от размера счетчика на странице*/
 		let heightCount = timer._counter.offsetHeight;
 		timer._counter.style.fontSize = heightCount/3 + 'px';
 		timer._counter.style.lineHeight = heightCount + 'px';
-	
+
+		/*устанавливаем размер circle в зависимости от размера timer на странице(firefox не работатет с процентами c cx, cy, r)*/
+		timer._circle.setAttribute('cx', timer._cx);
+		timer._circle.setAttribute('cy', timer._cy);
+		timer._circle.setAttribute('r', timer._r);
+
 		/*сдвигаем всю обводку circle до конца*/
 		timer._circle.setAttribute('stroke-dasharray', timer._lengthCircle);
 		timer._circle.setAttribute('stroke-dashoffset', timer._lengthCircle);
