@@ -44,6 +44,7 @@ h1 span{
 
 .m1, .m2, .m3, .m4, .m5{
 	font-size: 50px;
+	color: black;
 }
 
 .m1{
@@ -78,7 +79,7 @@ transform: translateY(25px);
 /* игровое поле */
 .memoji {
 	width: 100%;
-	padding: 5px 0 5px 0;
+	padding: 5px 0 25px 0;
 	background: #0197F6;
 	display: flex;
 	justify-content: space-between;
@@ -102,10 +103,10 @@ transform: translateY(25px);
 	width: 130px;
 	height: 130px;
 	position: relative;
-	transform-style: preserve-3d;
 	transition: transform 500ms;
 	border-radius: 9px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+	transform-style: preserve-3d;
 }
 
 /* класс для развернутой карточки */
@@ -126,7 +127,7 @@ transform: translateY(25px);
 }
 
 /*карточки*/
-.front, .back {
+.face, .back {
 	box-sizing: border-box;
 	position: absolute;
 	top: 0;
@@ -134,18 +135,17 @@ transform: translateY(25px);
 	width: 100%;
 	height: 100%;
 	border-radius: 9px;
-	backface-visibility: hidden;
 	cursor: pointer;
-}
-
-.front {
-	z-index: 2;
-	border: solid 5px white;
-	background: linear-gradient(45deg, #02182B, #448FA3);
+/*	transform: inherit;*/
 }
 
 .back {
-	transform: rotateY(-180deg);
+	border: solid 5px white;
+	background: linear-gradient(45deg, #02182B, #448FA3);
+	backface-visibility: hidden;
+}
+
+.face {
 	background: white;
 	text-align: center;
 	font-size: 60px;
@@ -208,7 +208,7 @@ form[name=start] input {
 	#name:focus{
 	outline: none;
 	box-shadow: inset 0 0 5px 0 #02182B;
-	background: #0197F6 !important;
+/*	background: #0197F6 !important;*/
 }
 form[name="start"] input[type="submit"] {
 	width: 50%;
@@ -231,6 +231,10 @@ form[name="start"] input[type="submit"]:focus{
 }
 form[name="start"] input[type="range"]:focus{
 	box-shadow: none;
+}
+form[name="start"] input[type="range"]{
+	border: none;
+	height: 60px;
 }
 .log{
 	margin: 5px auto 0 auto;
@@ -276,6 +280,7 @@ form[name="start"] input[type="range"]:focus{
 .float_window .message {
 	font-size: 25px;
 	text-align: center;
+	width: 100%;
 }
 
 /*анимация для букв*/
@@ -334,15 +339,13 @@ form[name="start"] input[type="range"]:focus{
 	font-weight: bold;
 	color: #02182B;
 	box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.5);
+	background: rgba( 51, 196, 7, 0.8);
 }
 
 .circle{
 	stroke: #02182B;
-	fill: rgba( 51, 196, 7, 0.8);
+	fill: none;
 	stroke-width: 2%;
-	cx:50%;
-	cy:50%;
-	r: 48%;
 	stroke-linecap: round;
 }
 
@@ -355,13 +358,13 @@ form[name="start"] input[type="range"]:focus{
 /*анимация назначаеться из JS*/
 @keyframes pulse {
 	0%
-	{fill: rgba( 51, 196, 7, 0.8);}
+	{background: rgba( 51, 196, 7, 0.8);}
 	33%
-	{fill: #E81010;}
+	{background: #E81010;}
 	66%
-	{fill: rgba( 51, 196, 7, 0.8);}
+	{background: rgba( 51, 196, 7, 0.8);}
 	100%
-	{fill: #E81010;}
+	{background: #E81010;}
 }
 
 /* Стили для окошка достижений */
@@ -375,6 +378,8 @@ form[name="start"] input[type="range"]:focus{
 	transition: all 1s ease;
 	position: absolute;
 	left: -260px;
+	top: 50%;
+	margin-top: -25%;
 	z-index: 1;
 	display: flex;
 	flex-flow: column nowrap;
@@ -431,14 +436,14 @@ form[name="start"] input[type="range"]:focus{
 		box-shadow: -1.5px 1.5px 7.5px rgba(0,0,0,0.5);
 	}
 
-	.front, .back {
+	.face, .back {
 		border-radius: 13.5px;
 	}
 
-	.front {
+	.back {
 		border-width: 7.5px;
 	}
-	.back {
+	.face {
 		font-size: 90px;
 		line-height: 195px;
 	}

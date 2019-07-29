@@ -15,10 +15,10 @@
 *htmlLose - поле с кодом html
 */
 const game = {
-	htmlForm: '<form  name="start"action="#"><fieldset><legend>Your Name</legend><input autofocus type="text" id="name"></fieldset><fieldset><legend>Time to try</legend><input type="range" name="time" min="10" max="120" step="10"><p class="log"></p></fieldset><input type="submit" name="submit" value="Go!"></form>',
+	htmlForm: '<form  name="start"action="#"><fieldset><legend>Your Name</legend><input autofocus type="text" id="name"></fieldset><fieldset><legend>Time to try</legend><input type="range" name="time" min="10" max="120" step="10" contenteditable="true"><p class="log"></p></fieldset><input type="submit" name="submit" value="Go!"></form>',
 	htmlWin: '<div class="float_window"><h2><span>W</span><span>i</span><span>n</span></h2><p class = "message"></p><div class="botton">Play again</div></div>',
 	htmlLose: '<div class="float_window"><h2><span>L</span><span>o</span><span>s</span><span>e</span></h2><p class = "message"></p><div class="botton">Try again</div></div>',
-	cardsDOM: Array.from(document.querySelectorAll('.card')),
+	cardsDOM: Array.prototype.slice.call(document.querySelectorAll('.card')),
 	cards: {},
 };
 
@@ -77,7 +77,7 @@ game.play = function(){
 	const field = document.querySelector('.field')
 	field.addEventListener('click', firstClick);
 	function firstClick(event){
-	if(event.target.classList.contains('front')){
+	if(event.target.classList.contains('back')){
 		timer.start(game.user.timeToPlay, game.lose);
 		field.removeEventListener('click', firstClick);
 	}
@@ -88,26 +88,35 @@ field.addEventListener('click', game.clickOnCard);
 };
 
 game.clickOnCard = function (event){//обработчик кликов отдельным методом так как хочу снимать лиснера в другом методе
-	if(event.target.classList.contains('back')){
+	if(event.target.classList.contains('face')){
 		let card = game.cards[event.target.offsetParent.classList[1]].revert();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
 		if(card){
-			let index =game.opens.findIndex(function(item){
-				return item.class === card.class;
+			let index =game.opens.forEach(function(item, index){
+				if(item.class === card.class){
+				return index;
+				}
 			});
 			game.opens.splice(index,1);
 		}
-	}if(event.target.classList.contains('front')){
+	}if(event.target.classList.contains('back')){
 		let card = game.cards[event.target.offsetParent.classList[1]].turn();//имя карты в объекте game.card точно совпадает со вторым классом родителя event.target
 		if(card){
+			if(game.opens[0]){
+				if(game.opens[0].class !== card.class){
+					game.opens.push(card);
+				++game.user.countTurn;
+				}else{console.log('You\'ve done it!')}
+			}else{
 			game.opens.push(card);
-			++game.user.countTurn;//здесь что то не так
+			++game.user.countTurn;
+			}
 		}
 		if(game.opens.length===2){
 			game.opens[0].lock = true;
 			game.opens[1].lock = true;
 			if(game.opens[0].partner === game.opens[1] && game.opens[1].partner === game.opens[0]){
 				game.opens[0].paintRight().partner.paintRight();
-				game.outCards = game.outCards.concat(game.opens.splice(0, 2))//сбрасываем карты в выбовшие
+				game.outCards = game.outCards.concat(game.opens.splice(0, 2))//сбрасываем карты в выбывшие
 			}else{
 				game.opens[0].paintWrong();
 				game.opens[1].paintWrong();
@@ -141,15 +150,21 @@ game.start = function(){
 			function updateValue() {
 				log.textContent = range.value + ' sec';
 			}
-			range.addEventListener('input', updateValue);
-
+			if(window.navigator.userAgent.indexOf('NET') === -1){
+				range.addEventListener('input', updateValue);
+			}else{
+				range.addEventListener('click', updateValue);
+			}
 			let name = document.querySelector('#name')
-			name.addEventListener('blur', ()=>{
+			name.addEventListener('blur', function(){
 				if(name.value.length !== 0){
 					name.style.background = '';
 				}else{
 					name.style.background = '#E81010';
 				}
+			});
+			name.addEventListener('focus', function(){
+				name.style.background = '';
 			});
 
 		field.addEventListener('submit', submit);
@@ -211,7 +226,7 @@ game.restart = function(block){
 	game.updateAchieving();
 	game.user.countTurn = 0;
 	timer._counter.textContent = '0';
-	timer._circle.style.animation = 'none';
+	timer._counter.style.animation = 'none';
 	timer._circle.setAttribute('stroke-dashoffset', timer._lengthCircle);
 	document.body.removeChild(block);
 	/*здесь нужен сброс всех состояний карт*/

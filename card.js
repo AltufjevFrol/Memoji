@@ -24,6 +24,12 @@ function Card (element, emojis) {
 	this.emoji = emojis.splice([Math.floor(Math.random()*(emojis.length))], 1)[0];
 	this.partner = null;
 	this.lock = false;
+/*настройки для IE*/
+	if(window.navigator.userAgent.indexOf('NET') !== -1){
+		element.children[0].style.transform = 'inherit';
+		element.children[1].style.transform = 'inherit';
+		element.style.transformStyle = 'flat';
+	}
 }
 
 Card.prototype = {
@@ -33,7 +39,8 @@ Card.prototype = {
 		if(this.lock){
 			return;
 		}else{
-		this.element.childNodes[3].textContent = String.fromCodePoint(this.emoji);
+		let target = '.'+this.class+' .face';
+		document.querySelector(target).textContent = String.fromCodePoint(this.emoji);
 		this.element.classList.add('turn');
 		return this;
 		}
@@ -42,18 +49,17 @@ Card.prototype = {
 		if(this.lock){
 			return;
 		}else{
+		let target = '.'+this.class+' .face';
+		document.querySelector(target).textContent = '';
 		this.element.classList.remove('turn');
-		this.element.childNodes[3].textContent = '';
 		return this;
 		}
 	},
 	spin: function(){
-		this.element.lastElementChild.hidden=true;
 		this.element.classList.add('spin');
 		return this;
 	},
 	doNotSpin: function(){
-		this.element.lastElementChild.hidden=false;
 		this.element.classList.remove('spin');
 		return this;
 	},
@@ -66,25 +72,31 @@ Card.prototype = {
 		return this;
 	},
 	paintRight: function(){
-		this.element.lastElementChild.classList.remove('wrong_color');
-		this.element.lastElementChild.classList.add('right_color');
+		let target = '.'+this.class+' .face';
+		document.querySelector(target).classList.remove('wrong_color');
+		document.querySelector(target).classList.add('right_color');
 		return this;
 	},
 	paintWrong: function(){
-		this.element.lastElementChild.classList.remove('right_color');
-		this.element.lastElementChild.classList.add('wrong_color');
+		let target = '.'+this.class+' .face';
+		document.querySelector(target).classList.remove('right_color');
+		document.querySelector(target).classList.add('wrong_color');
 		return this;
 	},
 	clearRight: function(){
-		this.element.lastElementChild.classList.remove('right_color');
+		let target = '.'+this.class+' .face';
+		document.querySelector(target).classList.remove('right_color');
 		return this;
 	},
 	clearWrong: function(){
-		this.element.lastElementChild.classList.remove('wrong_color');
+		let target = '.'+this.class+' .face';
+		document.querySelector(target).classList.remove('wrong_color');
 		return this;
 	},
 	clear: function(){
-		this.element.lastElementChild.classList.remove('wrong_color', 'right_color');
+		let target = '.'+this.class+' .face';
+		document.querySelector(target).classList.remove('wrong_color');
+		document.querySelector(target).classList.remove('right_color');
 		return this;
 	}
 }

@@ -12,7 +12,10 @@
 const timer = {
 	_circle: document.querySelector('.circle'),
 	_counter: document.querySelector('.count'),
-	_lengthCircle: document.querySelector('.circle').getTotalLength(),
+	_cx: document.querySelector('.timer').offsetWidth*0.5,
+	_cy: document.querySelector('.timer').offsetWidth*0.5,
+	_r: document.querySelector('.timer').offsetWidth*0.48,
+	_lengthCircle: Math.PI*2*(document.querySelector('.timer').offsetWidth*0.48),
 	_time: undefined,
 	_count: 0,
 	_fun: null,
@@ -76,12 +79,12 @@ const timer = {
 		self._count--;
 		self._counter.textContent = self._count;
 		if(self._count===Math.floor(self._time/100*25)){
-			self._circle.style.animation = 'pulse 800ms infinite alternate forwards linear';
+			self._counter.style.animation = 'pulse 800ms infinite alternate forwards linear';
 		}
 		if(self._count===0){
 			clearInterval(self._idCounter);
 			clearInterval(self._idRun);
-			self._circle.style.animationIterationCount = '1';
+			self._counter.style.animationIterationCount = '1';
 				if(typeof self._fun === 'function' && Object.getPrototypeOf(args).constructor === Array){
 				self._fun.apply(window, args);
 				}
@@ -97,8 +100,8 @@ const timer = {
 	stop: function(){
 		clearInterval(this._idCounter);
 		clearInterval(this._idRun);
-		if(this._circle.style.animation !== 'none'){
-		this._circle.style.animationIterationCount = '1';//что бы после остановки анимация застывала на красном
+		if(this._counter.style.animation !== 'none'){
+		this._counter.style.animationIterationCount = '1';//что бы после остановки анимация застывала на красном
 		}
 		let result = this._time - this._count;
 		this._count = 0;
@@ -107,12 +110,16 @@ const timer = {
 };
 
 /*задержка что бы таймер успел отрисоваться и переменные получили нормальное значение*/
-	setTimeout(()=>{
+	setTimeout(function(){
 		/*устанавливаем размер шрифта в зависимости от размера счетчика на странице*/
 		let heightCount = timer._counter.offsetHeight;
 		timer._counter.style.fontSize = heightCount/3 + 'px';
 		timer._counter.style.lineHeight = heightCount + 'px';
 	
+		timer._circle.setAttribute('cx',timer._cx);
+		timer._circle.setAttribute('cy',timer._cy);
+		timer._circle.setAttribute('r',timer._r);
+
 		/*сдвигаем всю обводку circle до конца*/
 		timer._circle.setAttribute('stroke-dasharray', timer._lengthCircle);
 		timer._circle.setAttribute('stroke-dashoffset', timer._lengthCircle);
