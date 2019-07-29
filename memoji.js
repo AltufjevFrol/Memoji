@@ -9,15 +9,16 @@ setTimeout(game.play, 500);
 document.querySelector('.card12').removeEventListener('animationstart', startGame,true)
 }
 
-/*const achieving = document.querySelector('.achieving');
-const bottonAchieving = document.querySelector('.botton_achieving');
-ach.addEventListener('click', clickAchieving);
-bottAch.addEventListener('click', clickBottonAchieving);
-
+const achieving = document.querySelector('.achieving');
+achieving.addEventListener('click', clickAchieving);
 function clickAchieving(){
-
+	if(achieving.classList.contains('achieving_click')){
+		achieving.classList.remove('achieving_click');
+	}else{
+		achieving.classList.add('achieving_click');
+	}
 };
-
-function clickBottonAchieving(){
-
-};*/
+if(window.navigator.userAgent.indexOf('NET') !== -1){
+	achieving.style.top = '0';
+	achieving.style.marginTop = '50px';
+}
