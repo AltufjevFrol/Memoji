@@ -122,21 +122,6 @@ h1 span{
 	        perspective: 600px;
 }
 
-.card {
-	box-sizing: border-box;
-	width: 130px;
-	height: 130px;
-	position: relative;
-	-webkit-transition:-webkit-transform 200ms;
-	transition:-webkit-transform 200ms;
-	transition:transform 200ms;
-	transition: transform 200ms, -webkit-transform 200ms;
-	border-radius: 9px;
-	box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-	-webkit-transform-style: preserve-3d;
-	        transform-style: preserve-3d;
-}
-
 /* класс для развернутой карточки */
 .turn {
 	-webkit-transform: rotateY(180deg);
@@ -162,6 +147,21 @@ h1 span{
 }
 
 /*карточки*/
+.card {
+	box-sizing: border-box;
+	width: 130px;
+	height: 130px;
+	position: relative;
+	-webkit-transition:-webkit-transform 200ms;
+	transition:-webkit-transform 200ms;
+	transition:transform 200ms;
+	transition: transform 200ms, -webkit-transform 200ms;
+	border-radius: 9px;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+	-webkit-transform-style: preserve-3d;
+	        transform-style: preserve-3d;
+}
+
 .face, .back {
 	box-sizing: border-box;
 	position: absolute;
@@ -507,16 +507,8 @@ form[name="start"] input[type="range"]{
 	left: 0;
 }
 
-.achieving_cklick {
-	-webkit-transition:all 1s ease;
-	transition: all 1s ease;
-	min-width: initial;
-	height: 0;
-	width: 0;
-}
-
 /*адаптация для вертикальной ориентации*/
-@media (orientation: portrait) {
+@media (orientation: portrait){
 
 	.field {
 		width: 660px;

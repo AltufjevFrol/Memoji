@@ -9,6 +9,7 @@ setTimeout(game.play, 500);
 document.querySelector('.card12').removeEventListener('animationstart', startGame,true)
 }
 
+/*выдвигающеся панель с достижениями*/
 const achieving = document.querySelector('.achieving');
 achieving.addEventListener('click', clickAchieving);
 function clickAchieving(){
@@ -18,6 +19,7 @@ function clickAchieving(){
 		achieving.classList.add('achieving_click');
 	}
 };
+/*стили панели в IE*/
 if(window.navigator.userAgent.indexOf('NET') !== -1){
 	achieving.style.top = '0';
 	achieving.style.marginTop = '50px';

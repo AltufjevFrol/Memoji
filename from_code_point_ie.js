@@ -1,4 +1,4 @@
-/*! полифил для IE добавляет метод fromCodePoint, скопировано с MDN */
+/*!полифил для IE добавляет метод fromCodePoint, скопировано с MDN */
 if (!String.fromCodePoint) {
   (function() {
     var defineProperty = (function() {

@@ -115,7 +115,7 @@ const timer = {
 		let heightCount = timer._counter.offsetHeight;
 		timer._counter.style.fontSize = heightCount/3 + 'px';
 		timer._counter.style.lineHeight = heightCount + 'px';
-	
+		/*установка размеров индикатора*/
 		timer._circle.setAttribute('cx',timer._cx);
 		timer._circle.setAttribute('cy',timer._cy);
 		timer._circle.setAttribute('r',timer._r);
