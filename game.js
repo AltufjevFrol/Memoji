@@ -8,7 +8,8 @@
 *game.play - процесс игры
 *game.win - процедура в случае победы
 *game.lose - процедура в случае поражения
-
+*game.updateAchieving - обновляет информацию в окне с достижениями
+*game.restart - перзапускает игру без обновления страницы
 *game.useer - объект с данными игрока
 *htmlForm - поле с кодом html
 *htmlWin - поле с кодом html
@@ -235,7 +236,7 @@ game.restart = function(block){
 		game.cards[prop].clear();
 		game.cards[prop].revert();
 	}
-	/*здесь нужен сброс всех состояний карт*/
+
 	game.createCards();//сооздаем объекты карточек
 	game.defPartner();//определяем пары
 	game.animationPreload();

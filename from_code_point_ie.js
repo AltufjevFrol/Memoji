@@ -1,4 +1,4 @@
-/*! http://mths.be/fromcodepoint v0.1.0 by @mathias */
+/*! полифил для IE добавляет метод fromCodePoint, скопировано с MDN */
 if (!String.fromCodePoint) {
   (function() {
     var defineProperty = (function() {
