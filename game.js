@@ -177,7 +177,9 @@ game.start = function(){
 				game.user.timeToPlay = range.value;
 				document.body.removeChild(field);
 				game.animationPreload();
-			}
+			}else{
+					name.style.background = '#E81010';
+				}
 		}
 };
 
